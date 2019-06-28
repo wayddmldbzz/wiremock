@@ -1,0 +1,10 @@
+<node>
+    <to>$(body.node.to)</to>
+    <from>$(body.node.from)</from>
+    <heading>
+        <order>
+            <orderNo>$(body.node.heading.order.orderNo)</orderNo>
+            <orderNo2>$(body.node.heading.order.orderNo2)</orderNo2>
+        </order>
+    </heading>
+</node>

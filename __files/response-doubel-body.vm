@@ -1,0 +1,14 @@
+<node>
+    <to>$(body.node.to)</to>
+    <from>$(body.node.from)</from>
+    <heading>
+        <order>
+            <orderNo>$(body.node.heading.order.orderNo)</orderNo>
+            #if($requestBody.contains('from'))
+      			<orderNo2>$(body.node.heading.order.orderNo2)</orderNo2>
+            #else
+            <orderNo2>no from node</orderNo2>
+            #end
+        </order>
+    </heading>
+</node>

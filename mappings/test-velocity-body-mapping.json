@@ -1,0 +1,14 @@
+{
+	"request": {
+		"method": "POST",
+		"urlPath": "/transform/post/double"
+	},
+	"response": {
+		"status": 200,
+		"bodyFileName": "response-doubel-body.vm",
+		"headers": {
+			"Content-Type": "text/xml"
+		},
+		"transformers": ["body-transformer"]
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"request": {
+		"method": "GET",
+		"urlPath": "/transform"
+	},
+	"response": {
+		"status": 200,
+		"body": "{\"responseName\": \"$(name)\"}",
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"transformers": ["body-transformer"]
+	}
+}

@@ -68,6 +68,7 @@ allprojects {
         compile "com.fasterxml.jackson.core:jackson-core:$versions.jackson",
             "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson",
             "com.fasterxml.jackson.core:jackson-databind:$versions.jacksonDatabind"
+        compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.9'
         compile "org.apache.httpcomponents:httpclient:4.5.6"
         compile "org.xmlunit:xmlunit-core:$versions.xmlUnit"
         compile "org.xmlunit:xmlunit-legacy:$versions.xmlUnit"
