@@ -10,7 +10,8 @@
     "requestHeaderConnection" : "$requestHeaderConnection",
     "date" : "$date",
     "math": "$math.round(22.2)",
-    #if($requestAbsoluteUrl == 'http://localhost:8080/resource')
+    "request": "$(name)",
+    #if($requestMethod.toString() == 'GET')
     "customProp" : "customValue",
     "customProp2" : "customValue2",
     #else

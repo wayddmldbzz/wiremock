@@ -15,11 +15,16 @@ import org.apache.velocity.Template;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.RuntimeServices;
+import org.apache.velocity.runtime.RuntimeSingleton;
+import org.apache.velocity.runtime.parser.ParseException;
+import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.jooq.lambda.Unchecked;
 import org.jooq.lambda.tuple.Tuple;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -59,7 +64,8 @@ public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
                                         final FileSource files,
                                         final Parameters parameters) {
         return Optional.of(templateDeclaredAndSpecifiesBodyFile(responseDefinition))
-                .filter(bool -> bool)
+                // 文件存在或者body不为空
+                .filter(bool -> bool || responseDefinition.getBody() != null)
                 .map(bool -> {
                     this.fileSource = files;
                     final VelocityEngine velocityEngine = new VelocityEngine();
@@ -75,7 +81,9 @@ public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
                     contextWithHeadersBodyAndParams.put("requestAbsoluteUrl", request.getAbsoluteUrl());
                     contextWithHeadersBodyAndParams.put("requestUrl", request.getUrl());
                     contextWithHeadersBodyAndParams.put("requestMethod", request.getMethod());
-                    final String body = getRenderedBody(responseDefinition, contextWithHeadersBodyAndParams);
+                    // 文件存在优先使用文件，文件不存在直接找body
+                    final String body = bool ? getRenderedFile(responseDefinition, contextWithHeadersBodyAndParams)
+                                             : getRenderedBody(responseDefinition, contextWithHeadersBodyAndParams);
                     return ResponseDefinitionBuilder.like(responseDefinition).but()
                             .withBody(body)
                             .build();
@@ -113,7 +121,7 @@ public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
     }
 
     private Boolean templateDeclaredAndSpecifiesBodyFile(final ResponseDefinition response) {
-        return templateDeclared(response) && response.specifiesBodyFile();
+        return response.getBodyFileName() != null && (templateDeclared(response) && response.specifiesBodyFile());
     }
 
     private Boolean templateDeclared(final ResponseDefinition response) {
@@ -146,6 +154,24 @@ public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
     }
 
     private String getRenderedBody(final ResponseDefinition response, final Context context) {
+        Template template = new Template();
+        RuntimeServices runtimeServices = RuntimeSingleton.getRuntimeServices();
+        StringReader reader = new StringReader(response.getBody());
+        SimpleNode node = null;
+        try {
+            node = runtimeServices.parse(reader, template);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        template.setRuntimeServices(runtimeServices);
+        template.setData(node);
+        template.initDocument();
+        StringWriter writer = new StringWriter();
+        template.merge(context, writer);
+        return String.valueOf(writer.getBuffer());
+    }
+
+    private String getRenderedFile(final ResponseDefinition response, final Context context) {
         final String templatePath = fileSource.getPath().concat("/" + response.getBodyFileName());
         final Template template = Velocity.getTemplate(templatePath);
         final StringWriter writer = new StringWriter();

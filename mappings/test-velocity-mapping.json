@@ -1,13 +1,14 @@
 {
     "request": {
-        "urlPattern": "/resource",
+        "urlPath": "/resource",
         "method": "GET"
     },
     "response": {
         "status": 200,
-        "bodyFileName": "response-test-body.vm",
+        "bodyFileName": "test-velocity-body.vm",
         "headers": {
             "Content-Type": "application/json"
-        }
+        },
+        "transformers": ["body-transformer"]
     }
 }

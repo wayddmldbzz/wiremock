@@ -22,7 +22,10 @@ import com.github.tomakehurst.wiremock.common.BinaryFile;
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.lambda.Unchecked;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -70,7 +73,13 @@ public class BodyTransformer extends ResponseDefinitionTransformer {
         }
 
         Map object = null;
-        String requestBody = request.getBodyAsString();
+        String requestBody = null;
+
+        if ("GET".equals(request.getMethod().toString())) {
+            requestBody = getParamToJsonString(request.getUrl());
+        } else if ("POST".equals(request.getMethod().toString())) {
+            requestBody = request.getBodyAsString();
+        }
 
         // Trying to create map of request body or query string parameters
         try {
@@ -136,6 +145,29 @@ public class BodyTransformer extends ResponseDefinitionTransformer {
                 .withBodyFile(null)
                 .withBody(transformResponse(object, responseBody))
                 .build();
+    }
+
+    /**
+     * GET方法取参数
+     * @param url
+     * @return
+     */
+    private String getParamToJsonString(String url) {
+        if (url.contains("?")) {
+            String urlParam = url.substring(url.lastIndexOf("?") + 1);
+            JSONObject jsonObject = new JSONObject();
+            if (urlParam.contains("&")) {
+                String[] urlParamArray = urlParam.split("&");
+                for (String param: urlParamArray) {
+                    jsonObject.put(param.split("=")[0], param.split("=")[1]);
+                }
+            } else {
+                jsonObject.put(urlParam.split("=")[0], urlParam.split("=")[1]);
+            }
+            return jsonObject.toString();
+        } else {
+            return "";
+        }
     }
 
     private String transformResponse(Map requestObject, String response) {
