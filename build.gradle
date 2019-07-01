@@ -28,8 +28,8 @@ allprojects {
     group = 'com.github.tomakehurst'
     version = '2.24.0'
 
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     repositories {
         mavenCentral()
@@ -56,7 +56,7 @@ allprojects {
     ]
 
     def versions = project.name == 'wiremock' ?
-        versionSets.java7 :
+        versionSets.java8 :
         versionSets[project.name]
 
     dependencies {
@@ -69,6 +69,9 @@ allprojects {
             "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson",
             "com.fasterxml.jackson.core:jackson-databind:$versions.jacksonDatabind"
         compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.9'
+        compile group: "org.apache.velocity", name: "velocity-engine-core", version: "2.1"
+        compile group: "org.apache.velocity.tools", name: "velocity-tools-generic", version: "3.0"
+        compile group: "org.jooq", name: "jool", version: "0.9.12"
         compile "org.apache.httpcomponents:httpclient:4.5.6"
         compile "org.xmlunit:xmlunit-core:$versions.xmlUnit"
         compile "org.xmlunit:xmlunit-legacy:$versions.xmlUnit"
