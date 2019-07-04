@@ -2,8 +2,6 @@ package com.github.tomakehurst.wiremock.extension;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.common.FileSource;
-import com.github.tomakehurst.wiremock.extension.Parameters;
-import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
@@ -23,7 +21,6 @@ import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.jooq.lambda.Unchecked;
 import org.jooq.lambda.tuple.Tuple;
-
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;

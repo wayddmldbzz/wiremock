@@ -1,11 +1,11 @@
 {
-   "to":  $(node.to),
-   "from":  $(node.from),
+   "to":  "$(node.to)",
+   "from":  "$(node.from)",
    "heading": {
       "order": {
-         "orderNo": $(node.heading.order.orderNo),
+         "orderNo": "$(node.heading.order.orderNo)",
          #if($requestBody.toString().contains('from'))
-         "orderNo2": $(node.heading.order.orderNo2)
+         "orderNo2": "$(node.heading.order.orderNo2)"
          #else
          "orderNo2": "no from node"
          #end

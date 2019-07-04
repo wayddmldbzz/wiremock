@@ -23,10 +23,7 @@ import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.lambda.Unchecked;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
