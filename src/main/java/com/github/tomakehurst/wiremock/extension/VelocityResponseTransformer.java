@@ -42,7 +42,8 @@ import java.util.stream.IntStream;
  */
 public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
 
-    private static final String NAME = "com.github.adamyork.wiremock.transformer.VelocityResponseTransformer";
+    private static final String NAME = "velocity-transformer";
+    private static final boolean APPLY_GLOBALLY = true;
 
     /**
      * The Velocity context that will hold our request header
@@ -91,6 +92,11 @@ public class VelocityResponseTransformer extends ResponseDefinitionTransformer {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public boolean applyGlobally() {
+        return APPLY_GLOBALLY;
     }
 
     private Context addParametersVariablesToContext(final String url, final Context context) {

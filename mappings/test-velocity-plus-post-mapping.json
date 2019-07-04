@@ -1,0 +1,14 @@
+{
+	"request": {
+		"method": "POST",
+		"urlPath": "/transform/post/double/plus"
+	},
+	"response": {
+		"status": 500,
+		"bodyFileName": "response-doubel-plus-body.vm",
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"transformers": ["body-transformer"]
+	}
+}

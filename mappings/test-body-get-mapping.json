@@ -1,11 +1,11 @@
 {
 	"request": {
-		"method": "POST",
-		"urlPath": "/transform"
+		"method": "GET",
+		"urlPath": "/transform/get"
 	},
 	"response": {
-		"status": 200,
-		"body": "{\"responseName\": \"$(_ENV_.name)\"}",
+		"status": 404,
+		"body": "{\"responseName\": \"$(name)\"}",
 		"headers": {
 			"Content-Type": "application/json"
 		},

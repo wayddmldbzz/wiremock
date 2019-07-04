@@ -17,6 +17,11 @@
     #else
     "customProp" : "customValue",
     #end
+    #if($requestAbsoluteUrl.toString().contains('resource'))
+    "contains" : true,
+    #else
+    "contains" : false,
+    #end
     "date" : "$date.getMonth()",
     "math" : "$math.floor(2.5)"
 }

@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/api/post"
+  },
+  "response": {
+    "status": 500,
+    "body": "{ \"id\": 2, \"name\": \"new product\", \"creator\": \"tester\", \"createTime\": \"2015-09-07\" }",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

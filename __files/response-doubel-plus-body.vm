@@ -1,0 +1,21 @@
+{
+  "if": {
+  	#if($requestBody.toString().contains('from')) 	
+		#set($is = "$(from)")
+  	#else
+     	#set($is = "no from node") 
+  	#end
+  	"to": "${is}"
+  },
+   "array":
+   	[
+   		#set ( $arr = [0..3] )
+			#foreach ( $x in $arr )
+				#if($x != 3)
+    			"$x",
+    		#else
+    			"$x"
+    		#end		
+		#end
+   ]
+}

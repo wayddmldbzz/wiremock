@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/transform/get/double/plus"
+  },
+  "response": {
+    "status": 302,
+    "body": "",
+    "headers": {
+      "Content-Type": "application/json",
+      "Location": "https://www.baidu.com/s?wd=$(param)"
+    },
+    "transformers": ["body-transformer"]
+  }
+}

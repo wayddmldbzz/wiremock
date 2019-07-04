@@ -20,6 +20,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.common.BinaryFile;
 import com.github.tomakehurst.wiremock.common.FileSource;
+import com.github.tomakehurst.wiremock.http.HttpHeader;
+import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 import net.minidev.json.JSONObject;
@@ -35,7 +37,7 @@ import java.util.regex.Pattern;
 public class BodyTransformer extends ResponseDefinitionTransformer {
 
     private static final String TRANSFORMER_NAME = "body-transformer";
-    private static final boolean APPLY_GLOBALLY = false;
+    private static final boolean APPLY_GLOBALLY = true;
 
     private static final Pattern interpolationPattern = Pattern.compile("\\$\\(.*?\\)");
     private static final Pattern randomIntegerPattern = Pattern.compile("!RandomInteger");
@@ -141,6 +143,7 @@ public class BodyTransformer extends ResponseDefinitionTransformer {
                 .like(responseDefinition).but()
                 .withBodyFile(null)
                 .withBody(transformResponse(object, responseBody))
+                .withHeaders(transformHeadersResponse(object, responseDefinition.getHeaders()))
                 .build();
     }
 
@@ -178,6 +181,24 @@ public class BodyTransformer extends ResponseDefinitionTransformer {
         }
 
         return modifiedResponse;
+    }
+
+    /**
+     * 对返回头的值进行 跟参数匹配转化
+     * @param requestObject 参数键值对
+     * @param response      请求头类型
+     * @return
+     */
+    private HttpHeaders transformHeadersResponse(Map requestObject, HttpHeaders response) {
+        List<HttpHeader> httpHeaders = new ArrayList<>();
+        for (HttpHeader httpHeader : response.all()) {
+            List<String> headers = new ArrayList<>();
+            for (String header : httpHeader.values()) {
+                headers.add(transformResponse(requestObject, header));
+            }
+            httpHeaders.add(new HttpHeader(httpHeader.key(), headers.toArray(new String[headers.size()])));
+        }
+        return new HttpHeaders(httpHeaders.toArray(new HttpHeader[httpHeaders.size()]));
     }
 
     private CharSequence getValue(String group, Map requestObject) {
