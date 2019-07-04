@@ -4,10 +4,10 @@
 		"urlPath": "/transform/post/double"
 	},
 	"response": {
-		"status": 200,
+		"status": 500,
 		"bodyFileName": "response-doubel-body.vm",
 		"headers": {
-			"Content-Type": "text/xml"
+			"Content-Type": "application/json"
 		},
 		"transformers": ["body-transformer"]
 	}
